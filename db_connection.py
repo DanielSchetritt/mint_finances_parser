@@ -26,9 +26,9 @@ class dbconnection:
 					row[i] = "'{0}-{1}-{2}".format(year, month, day)
 			temp = "','".join(row)[:-1]
 			temp += "''"
-			data[j] = '({}),'.format(temp)
+			data[j] = '({}),\n'.format(temp)
 		data = ''.join(data)
-		execution_string = execution_string.format(table_name, columns, data[:-1])
+		execution_string = execution_string.format(table_name, columns, data[:-1])[:-1]
 		self.db_conn.execute(execution_string)
 		self.db_conn.commit()
 

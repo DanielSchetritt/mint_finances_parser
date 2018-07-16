@@ -10,7 +10,10 @@ db_table = 'finances'
 db_conn = dbconnection(db_directory, db_name)
 
 for file in os.listdir(transaction_file_directory):
-	columns, data = parser.parse_file(transaction_file_directory + file)
-	db_conn.insert_data(columns, data, db_table)
+	if file == '.gitignore':
+		continue
+	else:
+		columns, data = parser.parse_file(transaction_file_directory + file)
+		db_conn.insert_data(columns, data, db_table)
 
 db_conn.close_connection()
