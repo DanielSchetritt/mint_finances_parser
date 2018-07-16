@@ -15,10 +15,12 @@ for file in os.listdir(transaction_file_directory):
 	if file == '.gitignore':
 		continue
 	elif file.split('.')[-1].lower() != 'csv':
+		# TODO: Add JSON support
 		print('You must provide a CSV file')
 	else:
 		print('Processing: {}\n'.format(file))
 		columns, data = parser.parse_csv_file(transaction_file_directory + file, transaction_file_target_directory)
+		columns = [x.replace(' ', '_').lower() for x in columns]
 		db_conn.insert_data(columns, data, db_table)
 
 db_conn.close_connection()

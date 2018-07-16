@@ -6,11 +6,11 @@ import datetime
 
 def parse_csv_file(file_path, target_directory=''):
 	file = open(file_path, 'r')
-	rowreader = csv.reader(file, delimiter=',')
+	row_reader = csv.reader(file, delimiter=',')
 	first_line = True
 	columns = None
 	data = []
-	for line in rowreader:
+	for line in row_reader:
 		if first_line:
 			first_line = False
 			line[0] = 'date_'
