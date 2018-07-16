@@ -4,6 +4,7 @@ import os
 
 transaction_file_directory = os.path.dirname(os.path.realpath(__file__))
 db_directory = transaction_file_directory + '/database/'
+transaction_file_target_directory = transaction_file_directory + '/parsed_files/'
 transaction_file_directory += '/transaction_file/'
 db_name = 'finances.db'
 db_table = 'finances'
@@ -13,7 +14,7 @@ for file in os.listdir(transaction_file_directory):
 	if file == '.gitignore':
 		continue
 	else:
-		columns, data = parser.parse_file(transaction_file_directory + file)
+		columns, data = parser.parse_file(transaction_file_directory + file, transaction_file_target_directory)
 		db_conn.insert_data(columns, data, db_table)
 
 db_conn.close_connection()
