@@ -12,23 +12,18 @@ class dbconnection:
 
 	def insert_data(self, columns, data, table_name):
 		execution_string = 'INSERT INTO {0} ({1}) values {2}'
-		columns = ','.join(columns).replace('"', "'")
+		for i in range(len(columns)):
+			columns[i] = "'{}'".format(columns[i])
+		columns = ','.join(columns)
 
-		for j in range(len(data)):
-			row = data[j]
-			for i in range(len(row)):
-				if i == 0:
-					month, day, year = row[i].split('/')
-					if len(day) == 1:
-						day = '0' + day
-					if len(month) == 1:
-						month = '0' + month
-					row[i] = "'{0}-{1}-{2}".format(year, month, day)
-			temp = "','".join(row)[:-1]
-			temp += "''"
-			data[j] = '({}),\n'.format(temp)
-		data = ''.join(data)
-		execution_string = execution_string.format(table_name, columns, data[:-1])[:-1]
+		for i in range(len(data)):
+			for j in range(len(data[i])):
+				data[i][j] = "'{}'".format(data[i][j].replace("'", ''))
+			data[i] = ','.join(data[i])
+			data[i] = '({})'.format(data[i])
+		data = ',\n'.join(data)
+		# data += "\')"
+		execution_string = execution_string.format(table_name, columns, data)
 		self.db_conn.execute(execution_string)
 		self.db_conn.commit()
 

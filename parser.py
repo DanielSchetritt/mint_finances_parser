@@ -1,32 +1,30 @@
 import re
 import os
+import csv
 import datetime
 
 
-def parse_file(filepath, target_directory=''):
-	file = open(filepath, 'r')
-
+def parse_csv_file(file_path, target_directory=''):
+	file = open(file_path, 'r')
+	rowreader = csv.reader(file, delimiter=',')
 	first_line = True
 	columns = None
 	data = []
-	for line in file:
-		line = line.replace('\n', '').replace('\'', '')
-		temp = []
+	for line in rowreader:
 		if first_line:
 			first_line = False
-			columns = line.lower().replace(' ', '_').replace('date', 'date_').split(',')
+			line[0] = 'date_'
+			columns = line
 		else:
-			line = re.findall(r'"([^"]*)"', line)
-			for item in line:
-				temp.append(item.replace(',', ''))
-		if temp:
-			data.append(temp)
+			data.append(line)
+
+
 
 	if target_directory != '':
-		filename = filepath.split('/')[-1].split('.')
-		now = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f")
-		filename[0] = filename[0] + now
+		filename = file_path.split('/')[-1].split('.')
+		now = datetime.datetime.now().strftime("%Y%m%d%H%M%S%f")
+		filename[0] = filename[0] + '_' + now
 		filename = '.'.join(filename)
-		os.system('mv {} {}'.format(filepath, target_directory+filename))
+		# os.system('mv {} {}'.format(file_path, target_directory+filename))
 
 	return columns, data
