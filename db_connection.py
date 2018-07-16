@@ -22,7 +22,6 @@ class dbconnection:
 			data[i] = ','.join(data[i])
 			data[i] = '({})'.format(data[i])
 		data = ',\n'.join(data)
-		# data += "\')"
 		execution_string = execution_string.format(table_name, columns, data)
 		self.db_conn.execute(execution_string)
 		self.db_conn.commit()
